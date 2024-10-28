@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Details</title>
+</head>
+<body>
+    <h1>Ticket Details</h1>
+    <p><strong>Ticket ID:</strong> {{ ticket.ticket_id }}</p>
+    <p><strong>VAT ID:</strong> {{ ticket.vat_id }}</p>
+    <p><strong>Name:</strong> {{ ticket.first_name }} {{ ticket.last_name }}</p>
+    <p><strong>Time Created:</strong> {{ ticket.time_created }}</p>
+    <p>Logged in as: {{ user }}</p>
+    <img src="{{ url_for('static', filename='qr/' + ticket_id + '.png') }}" alt="QR Code">
+    <p><a href="{{ url_for('index') }}">Back to Home</a></p>
+</body>
+</html>
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Ticket Generator</title>
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+
+            var formData = {
+                vat_id: document.getElementById('vat_id').value,
+                first_name: document.getElementById('first_name').value,
+                last_name: document.getElementById('last_name').value
+            };
+
+            fetch('/generate-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                } else {
+                    document.getElementById('result').innerHTML = 
+                        '<h2>Ticket Generated Successfully</h2>' +
+                        '<p><strong>Ticket ID:</strong> ' + data.ticket_id + '</p>' +
+                        '<p><strong>QR Code:</strong> <img src="' + data.qr_code + '" alt="QR Code"></p>';
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('Failed to generate ticket: ' + error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Ticket Generator!</h1>
+    <p>Total Tickets Generated: <span id="ticket_count">{{ ticket_count }}</span></p>
+
+    <h2>Generate New Ticket</h2>
+    <form onsubmit="submitForm(event);">
+        <label for="vat_id">VAT ID:</label>
+        <input type="text" id="vat_id" name="vat_id" required><br><br>
+
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+
+        <button type="submit">Generate Ticket</button>
+    </form>
+
+    <div id="result"></div>
+</body>
+</html>
